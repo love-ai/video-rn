@@ -18,7 +18,7 @@ export default class HttpCall {
     let queryUrl;
     let header = AppConfigs; // 请求头信息
     if (!isEmpty(header)) {
-      let host = NETWORK_BASE_URL(header.env);
+      let host = NETWORK_BASE_URL(header.ENV);
       if (isEqual(method, "POST")) {
         if (contentType === "multipart/form-data") {
           headerOptions = {
@@ -65,6 +65,7 @@ export default class HttpCall {
           return response.json();
         })
         .then((responseData) => {
+          console.log(JSON.stringify(responseData))
           if ([0, "200", "0"].includes(responseData.code)) {
             // 1, 请求成功
             if (!isEmpty(responseData.data)) {
@@ -78,6 +79,7 @@ export default class HttpCall {
           }
         })
         .catch((err) => {
+          console.log(JSON.stringify(err))
           // 异常处理
           let error = {};
           if (isEqual(err.message, "Network request failed")) {

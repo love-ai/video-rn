@@ -14,10 +14,6 @@ const Colors = {
   C_000: "rgba(0,0,0,0)",
   black: "black",
   white: "white",
-  lighter: '#F3F3F3',
-  light: '#DAE1E7',
-  dark: '#444',
-  darker: '#222',
 };
 
 export { Colors };

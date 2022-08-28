@@ -13,7 +13,7 @@ export default class LoadingComponent extends PureComponent {
   render() {
     return (
       <View style={styles.load_anim}>
-        <FastImage style={styles.loading_img} source={StateImg.state_loading} />
+        <FastImage style={styles.loading_img} source={StateImg.state_loading_more} />
       </View>
     );
   }
