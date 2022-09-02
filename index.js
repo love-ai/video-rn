@@ -3,6 +3,6 @@
  */
 
 import { AppRegistry } from "react-native";
-import LoginPage from "./src/page/LoginPage";
+import App from "./src/router/AppStack";
 
-AppRegistry.registerComponent("RnVideo", () => LoginPage);
+AppRegistry.registerComponent("RnVideo", () => App);

@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import FastImage from "react-native-fast-image";
-import { StateImg } from "../../res/Images";
+import { Images } from "../../res/Images";
 import { Colors } from "../../res/Colors";
 import PropTypes from "prop-types";
 
@@ -27,7 +27,7 @@ export default class DefaultView extends PureComponent {
       >
         <FastImage
           style={commStyle.def_img}
-          source={StateImg.state_empty}
+          source={Images.state_empty}
           resizeMode={"stretch"}
         />
         <Text style={commStyle.def_txt}>{this.props.message}</Text>

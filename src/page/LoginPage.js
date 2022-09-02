@@ -6,6 +6,7 @@ import HttpCall from "../net/HttpCall";
 import Api from "./Api";
 import { Colors } from "../res/Colors";
 import md5 from "md5";
+import Toast from "react-native-root-toast";
 
 
 export default class LoginPage extends BasePage {
@@ -24,19 +25,31 @@ export default class LoginPage extends BasePage {
   login() {
     this.showLoading();
     const { mobile, password } = this.state;
+    const { navigation } = this.props;
+    // let params = {
+    //   mobile: mobile,
+    //   password: md5(password),
+    // };
     let params = {
-      mobile: mobile,
-      password: md5(password),
+      mobile: "17319332997",
+      password: md5("123456"),
     };
     console.log(params);
     HttpCall.post(Api.login, params)
-      .then(async (data) => {
-        console.log(JSON.stringify(data));
+      .then((data) => {
         this.hideLoading();
+        console.log(JSON.stringify(data));
+        Toast.show("登陆成功");
+        let userId = data.user.id;
+        //前往视频播放页面
+        navigation.navigate("VideoListPage", {
+          userId: userId,
+        });
       })
       .catch((error) => {
-        console.log(error.msg);
         this.hideLoading();
+        Toast.show(error.msg);
+        console.log(error.msg);
       });
   }
 

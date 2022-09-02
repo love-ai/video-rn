@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 import { StyleSheet,View } from "react-native";
 import FastImage from "react-native-fast-image";
-import { StateImg } from "../../res/Images";
+import { Images } from "../../res/Images";
 import { Colors } from "../../res/Colors";
 
 export default class LoadingComponent extends PureComponent {
@@ -13,7 +13,7 @@ export default class LoadingComponent extends PureComponent {
   render() {
     return (
       <View style={styles.load_anim}>
-        <FastImage style={styles.loading_img} source={StateImg.state_loading_more} />
+        <FastImage style={styles.loading_img} source={Images.state_loading_more} />
       </View>
     );
   }

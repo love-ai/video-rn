@@ -1,6 +1,6 @@
 const Api = {
   login: "/login",//登陆
-  addUser: "/add_user", //添加用户
+  getVideoList: "/getVideoList", //获取视频列表
 };
 
 export default Api;
