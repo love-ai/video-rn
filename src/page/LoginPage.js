@@ -9,7 +9,7 @@ import md5 from "md5";
 import Toast from "react-native-root-toast";
 import { MMKV } from "react-native-mmkv";
 
-export const storage = new MMKV();
+const storage = new MMKV();
 
 export default class LoginPage extends BasePage {
 

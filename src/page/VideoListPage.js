@@ -6,7 +6,9 @@ import HttpCall from "../net/HttpCall";
 import Api from "./Api";
 import Toast from "react-native-root-toast";
 import VideoListItem from "./view/VideoListItem";
-import { storage } from "./LoginPage";
+import { MMKV } from "react-native-mmkv";
+
+const storage = new MMKV();
 
 export default class VideoListPage extends BasePage {
 
