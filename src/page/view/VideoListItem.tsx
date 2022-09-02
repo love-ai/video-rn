@@ -36,7 +36,7 @@ export default function VideoListItem({ item, navigation }: Props) {
         </View>
       </TouchableWithoutFeedback>
       <View style={styles.bottom_container}>
-        <Text style={styles.title}>{item.desc}</Text>
+        <Text style={styles.title}>{item.title}</Text>
         <View style={styles.like_container}>
           <FastImage style={styles.like_icon} source={Images.like} resizeMode={"stretch"} />
           <FastImage style={styles.like_icon} source={Images.unlike} resizeMode={"stretch"} />
@@ -81,6 +81,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 13,
+    numberOfLines: 2,
     maxWidth: videoWidth - 80,
     color: Colors.C_161616
   },
@@ -92,7 +93,7 @@ const styles = StyleSheet.create({
   like_icon: {
     width: 20,
     height: 20,
-    marginLeft: 8
+    marginLeft: 10
   }
 });
 

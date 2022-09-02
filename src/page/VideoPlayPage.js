@@ -1,7 +1,9 @@
 import React from "react";
 import BasePage from "../base/BasePage";
 import BaseComponent from "../base/BaseComponent";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet } from "react-native";
+import { Colors } from "../res/Colors";
+import VideoPlayer from "react-native-video-controls";
 
 export default class VideoListPage extends BasePage {
 
@@ -24,16 +26,27 @@ export default class VideoListPage extends BasePage {
   }
 
   getContentView() {
-    // const { hls_url } = this.props.route.hls_url;
+    const { hls_url } = this.props.route.params;
+    console.log("hls_url:" + hls_url);
     return (
-      <View style={styles.container}>
-      </View>
+      <VideoPlayer
+        source={{ uri: hls_url }}
+        disableFullscreen={true}
+        disableVolume={true}
+        navigator={this.props.navigation}
+        style={styles.backgroundVideo}
+      />
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  backgroundVideo: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
+    backgroundColor: Colors.black,
   },
 });
