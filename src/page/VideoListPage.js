@@ -62,6 +62,7 @@ export default class VideoListPage extends BasePage {
 
   getContentView() {
     const { data, isRefreshing } = this.state;
+    console.log("data:"+JSON.stringify(data))
     return (
       <View style={styles.container}>
         <FlatList

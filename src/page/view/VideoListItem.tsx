@@ -22,7 +22,10 @@ type Props = {
 };
 
 export default function VideoListItem({ item, navigation }: Props) {
-  const [likeType, setLikeType] = useState(item.like_type);//0无点赞 1喜欢 2不喜欢
+  let [likeType, setLikeType] = useState(item.like_type);//0无点赞 1喜欢 2不喜欢
+  if (likeType != item.like_type) {
+    likeType = item.like_type;
+  }
 
   function changeLike(isClickLike) {
     if (isClickLike) {
@@ -41,6 +44,7 @@ export default function VideoListItem({ item, navigation }: Props) {
   }
 
   function changeType(likeType) {
+    item.like_type = likeType;
     setLikeType(likeType);
     let param = {
       "user_id": storage.getNumber("user.id"),
