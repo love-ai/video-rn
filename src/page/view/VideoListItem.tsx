@@ -17,9 +17,7 @@ type Props = {
 };
 
 export default function VideoListItem({ item, navigation }: Props) {
-  console.log(JSON.stringify(item));
   return (
-
     <View style={styles.container}>
       <TouchableWithoutFeedback
         onPress={() => {

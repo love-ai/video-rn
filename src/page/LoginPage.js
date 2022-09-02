@@ -7,7 +7,9 @@ import Api from "./Api";
 import { Colors } from "../res/Colors";
 import md5 from "md5";
 import Toast from "react-native-root-toast";
+import { MMKV } from "react-native-mmkv";
 
+export const storage = new MMKV();
 
 export default class LoginPage extends BasePage {
 
@@ -20,6 +22,18 @@ export default class LoginPage extends BasePage {
       mobile: "",
       password: "",
     };
+  }
+
+  componentDidMount() {
+    let userId = storage.getNumber("user.id");
+    if (userId > 0) {
+      this.props.navigation.replace("VideoListPage", {
+        userId: userId,
+      });
+    }
+  }
+
+  onResume() {
   }
 
   login() {
@@ -41,8 +55,9 @@ export default class LoginPage extends BasePage {
         console.log(JSON.stringify(data));
         Toast.show("登陆成功");
         let userId = data.user.id;
+        storage.set("user.id", userId);
         //前往视频播放页面
-        navigation.navigate("VideoListPage", {
+        navigation.replace("VideoListPage", {
           userId: userId,
         });
       })

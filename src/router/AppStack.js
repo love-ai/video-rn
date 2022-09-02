@@ -25,7 +25,9 @@ export default function App() {
         <Stack.Screen
           name={"VideoListPage"}
           component={VideoListPage}
-          options={{ title: "培训视频", headerBackVisible: false }}
+          options={{
+            title: "培训视频", headerBackVisible: false,
+          }}
         />
         <Stack.Screen
           name={"VideoPlayPage"}

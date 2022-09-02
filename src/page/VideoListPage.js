@@ -1,11 +1,12 @@
 import React from "react";
 import BasePage from "../base/BasePage";
 import BaseComponent from "../base/BaseComponent";
-import { FlatList, RefreshControl, StyleSheet, View } from "react-native";
+import { FlatList, RefreshControl, StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native";
 import HttpCall from "../net/HttpCall";
 import Api from "./Api";
 import Toast from "react-native-root-toast";
 import VideoListItem from "./view/VideoListItem";
+import { storage } from "./LoginPage";
 
 export default class VideoListPage extends BasePage {
 
@@ -15,15 +16,24 @@ export default class VideoListPage extends BasePage {
       data: {},
       loading: true,
       isRefreshing: false,
-
     };
   }
 
   componentDidMount() {
+    const { navigation } = this.props;
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableWithoutFeedback onPress={() => {
+          storage.set("user.id", -1);
+          navigation.replace("LoginPage");
+        }}>
+          <Text>退出</Text>
+        </TouchableWithoutFeedback>),
+    });
     this.getData();
   }
 
-  getData(isRefresh = false) {
+  getData() {
     const { userId } = this.props.route.params;
     let params = {
       userId: userId,
@@ -61,8 +71,8 @@ export default class VideoListPage extends BasePage {
           keyExtractor={(item, index) => `${index}`}
           refreshControl={
             <RefreshControl
-              isRefreshing={isRefreshing}
-              onRefresh={() => this.getData(true)}
+              refreshing={isRefreshing}
+              onRefresh={() => this.getData()}
             />
           }
           renderItem={({ item, index }) => <VideoListItem item={item} navigation={this.props.navigation} />}
