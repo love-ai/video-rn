@@ -1,5 +1,5 @@
 // @ts-ignore
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Dimensions, StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native";
 import FastImage from "react-native-fast-image";
 import { Images } from "../../res/Images";
@@ -24,7 +24,7 @@ type Props = {
 export default function VideoListItem({ item, navigation }: Props) {
   let [likeType, setLikeType] = useState(item.like_type);//0无点赞 1喜欢 2不喜欢
   if (likeType != item.like_type) {
-    likeType = item.like_type;
+    setLikeType(item.like_type);
   }
 
   function changeLike(isClickLike) {

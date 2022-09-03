@@ -31,7 +31,7 @@ export default class VideoListPage extends BasePage {
     return (
       <VideoPlayer
         source={{ uri: hls_url }}
-        disableFullscreen={true}
+        disableFullscreen={false}
         disableVolume={true}
         navigator={this.props.navigation}
         style={styles.backgroundVideo}

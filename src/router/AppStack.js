@@ -4,6 +4,7 @@ import LoginPage from "../page/LoginPage";
 import VideoListPage from "../page/VideoListPage";
 import VideoPlayPage from "../page/VideoPlayPage";
 import { NavigationContainer } from "@react-navigation/native";
+import { Colors } from "../res/Colors";
 
 const Stack = createNativeStackNavigator();
 
@@ -18,6 +19,10 @@ export default function App() {
           headerTitleStyle: { fontSize: 18 },
           headerShadowVisible: false,
           animation: "slide_from_right",
+          orientation: "portrait",
+          statusBarHidden: false,
+          statusBarStyle: "dark",
+          statusBarColor: Colors.white,
         }}//可直接使用
         headerMode={"none"} //不展示导航栏
       >
@@ -34,7 +39,11 @@ export default function App() {
           component={VideoPlayPage}
           options={{
             headerShown: false,
-            animation: "simple_push",
+            statusBarHidden: true,
+            animation: "fade",
+            statusBarStyle: "light",
+            statusBarColor: Colors.black,
+            orientation: "all",
           }} />
       </Stack.Navigator>
     </NavigationContainer>
