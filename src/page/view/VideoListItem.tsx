@@ -84,16 +84,20 @@ export default function VideoListItem({ item, navigation }: Props) {
             onPress={() => {
               changeLike(true);
             }}>
-            <FastImage style={styles.like_icon} source={likeType === 1 ? Images.like_checked : Images.like}
-                       resizeMode={"stretch"} />
+            <View style={styles.click_padding}>
+              <FastImage style={styles.like_icon} source={likeType === 1 ? Images.like_checked : Images.like}
+                         resizeMode={"stretch"} />
+            </View>
           </TouchableWithoutFeedback>
 
           <TouchableWithoutFeedback
             onPress={() => {
               changeLike(false);
             }}>
-            <FastImage style={styles.like_icon} source={likeType === 2 ? Images.unlike_checked : Images.unlike}
-                       resizeMode={"stretch"} />
+            <View style={styles.click_padding}>
+              <FastImage style={styles.like_icon} source={likeType === 2 ? Images.unlike_checked : Images.unlike}
+                         resizeMode={"stretch"} />
+            </View>
           </TouchableWithoutFeedback>
         </View>
       </View>
@@ -137,7 +141,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 13,
     numberOfLines: 2,
-    maxWidth: videoWidth - 80,
+    maxWidth: videoWidth - 90,
     color: Colors.C_161616
   },
   like_container: {
@@ -145,10 +149,13 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-end"
   },
+  click_padding: {
+    paddingHorizontal: 5,
+    paddingVertical: 10
+  },
   like_icon: {
     width: 20,
-    height: 20,
-    marginLeft: 10
+    height: 20
   }
 });
 

@@ -7,6 +7,7 @@ import Api from "./Api";
 import Toast from "react-native-root-toast";
 import VideoListItem from "./view/VideoListItem";
 import { MMKV } from "react-native-mmkv";
+import { Colors } from "../res/Colors";
 
 const storage = new MMKV();
 
@@ -29,7 +30,7 @@ export default class VideoListPage extends BasePage {
           storage.set("user.id", -1);
           navigation.replace("LoginPage");
         }}>
-          <Text>退出</Text>
+          <Text style={{ color: Colors.C_999999 }}>退出</Text>
         </TouchableWithoutFeedback>),
     });
     this.getData();
@@ -62,7 +63,7 @@ export default class VideoListPage extends BasePage {
 
   getContentView() {
     const { data, isRefreshing } = this.state;
-    console.log("data:"+JSON.stringify(data))
+    console.log("data:" + JSON.stringify(data));
     return (
       <View style={styles.container}>
         <FlatList

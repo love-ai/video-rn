@@ -32,7 +32,10 @@ export default function App() {
         <Stack.Screen
           name={"VideoPlayPage"}
           component={VideoPlayPage}
-          options={{ headerShown: false }} />
+          options={{
+            headerShown: false,
+            animation: "simple_push",
+          }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
