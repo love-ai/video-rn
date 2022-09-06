@@ -3,7 +3,7 @@ import { View } from "react-native";
 import NavigationBar from "./component/NavigationBar";
 import PropTypes from "prop-types";
 import LoadingComponent from "./component/LoadingComponent";
-import { StateImg } from "../res/Images";
+import { Images } from "../res/Images";
 import PermissionComponent from "./component/PermissionComponent";
 import DefaultView from "./component/DefaultView";
 import commStyle from "./component/DefaultView";
@@ -27,12 +27,12 @@ export default class BaseComponent extends Component {
 
   static defaultProps = {
     loading: true, // 进入页面 是否进行网络请求，默认请求
-    showNavBar: true,
+    showNavBar: false,
     isEmpty: false, // 当前页面无数据
     isError: false, // 当前页面出现错误
     hasPermission: true, // 当前页面是否有权限 默认有
     errorText: Strings.state_retry_txt,
-    errorImage: StateImg.state_net_error,
+    errorImage: Images.state_net_error,
     retry: () => {
     }, // 网络错误重试函数
     backgroundColor: Colors.C_F4F4F4,
@@ -98,7 +98,7 @@ export default class BaseComponent extends Component {
           style={showNavBar ? commStyle.custom_def : defaultViewStyle}
           onPress={retry}
           message={Strings.state_retry_txt}
-          icon={StateImg.state_net_error}
+          icon={Images.state_net_error}
         />
       );
     } else if (!hasPermission) {

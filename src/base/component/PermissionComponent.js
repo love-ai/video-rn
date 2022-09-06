@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import PropTypes from "prop-types";
-import { StateImg } from "../../res/Images";
+import { Images } from "../../res/Images";
 import { Colors } from "../../res/Colors";
 
 /**
@@ -15,7 +15,7 @@ export default class PermissionComponent extends PureComponent {
 
   static defaultProps = {
     mainTitle: "您没有权限，无法访问该页面",
-    image: StateImg.state_no_permission,
+    image: Images.state_no_permission,
   };
 
   constructor(props) {

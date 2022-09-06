@@ -1,7 +1,6 @@
 import { Component } from "react";
 import { isEmpty } from "../utils/ObjectUtil";
 
-
 export default class BasePage extends Component {
   constructor(props) {
     super(props);
@@ -22,9 +21,11 @@ export default class BasePage extends Component {
     }
   }
 
+
   //react-navigation onFocus native onResume
   onResume() {
   }
+
 
   componentWillUnmount() {
     this.unSubscribeFocus && this.unSubscribeFocus();
