@@ -40,13 +40,9 @@ export default class LoginPage extends BasePage {
     this.showLoading();
     const { mobile, password } = this.state;
     const { navigation } = this.props;
-    // let params = {
-    //   mobile: mobile,
-    //   password: md5(password),
-    // };
     let params = {
-      mobile: "17319332997",
-      password: md5("123456"),
+      mobile: mobile,
+      password: md5(password),
     };
     console.log(params);
     HttpCall.post(Api.login, params)
