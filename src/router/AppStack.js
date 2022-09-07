@@ -28,7 +28,13 @@ export default function App() {
         headerMode={"none"} //不展示导航栏
       >
         <Stack.Screen name={"LoginPage"} component={LoginPage} options={{ title: "请登录" }} />
-        <Stack.Screen name={"ModifyPasswordPage"} component={ModifyPasswordPage} options={{ title: "修改密码" }} />
+        <Stack.Screen
+          name={"ModifyPasswordPage"}
+          component={ModifyPasswordPage}
+          options={{
+            title: "修改密码",
+            headerBackVisible: false,
+          }} />
         <Stack.Screen
           name={"VideoListPage"}
           component={VideoListPage}
