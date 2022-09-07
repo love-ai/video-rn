@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginPage from "../page/LoginPage";
 import VideoListPage from "../page/VideoListPage";
 import VideoPlayPage from "../page/VideoPlayPage";
+import ModifyPasswordPage from "../page/ModifyPasswordPage";
 import { NavigationContainer } from "@react-navigation/native";
 import { Colors } from "../res/Colors";
 
@@ -27,6 +28,7 @@ export default function App() {
         headerMode={"none"} //不展示导航栏
       >
         <Stack.Screen name={"LoginPage"} component={LoginPage} options={{ title: "请登录" }} />
+        <Stack.Screen name={"ModifyPasswordPage"} component={ModifyPasswordPage} options={{ title: "修改密码" }} />
         <Stack.Screen
           name={"VideoListPage"}
           component={VideoListPage}

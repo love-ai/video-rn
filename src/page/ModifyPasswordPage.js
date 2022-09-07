@@ -11,7 +11,7 @@ import { MMKV } from "react-native-mmkv";
 
 const storage = new MMKV();
 
-export default class LoginPage extends BasePage {
+export default class ModifyPasswordPage extends BasePage {
 
   constructor(props) {
     super(props);
@@ -21,6 +21,8 @@ export default class LoginPage extends BasePage {
       showNavBar: false,
       mobile: "",
       password: "",
+      newPassword: "",
+      newPasswordConfirm: "",
     };
   }
 
@@ -36,10 +38,18 @@ export default class LoginPage extends BasePage {
   onResume() {
   }
 
-  login() {
-    const { mobile, password } = this.state;
+  modify() {
+    const { mobile, password, newPassword, newPasswordConfirm } = this.state;
     if (mobile.length < 11) {
       Toast.show("请输入正确的手机号");
+      return;
+    }
+    if (newPassword.length < 6) {
+      Toast.show("密码最少6位长度");
+      return;
+    }
+    if (newPassword !== newPasswordConfirm) {
+      Toast.show("两次输入密码不一致");
       return;
     }
     this.showLoading();
@@ -47,19 +57,16 @@ export default class LoginPage extends BasePage {
     let params = {
       mobile: mobile,
       password: md5(password),
+      newPassword: md5(newPassword),
     };
     console.log(params);
-    HttpCall.post(Api.login, params)
+    HttpCall.post(Api.modifyPassword, params)
       .then((data) => {
         this.hideLoading();
         console.log(JSON.stringify(data));
-        Toast.show("登陆成功");
-        let userId = data.user.id;
-        storage.set("user.id", userId);
+        Toast.show("修改成功请登陆");
         //前往视频播放页面
-        navigation.replace("VideoListPage", {
-          userId: userId,
-        });
+        navigation.goBack();
       })
       .catch((error) => {
         this.hideLoading();
@@ -83,25 +90,29 @@ export default class LoginPage extends BasePage {
                  keyboardType={"number-pad"}
                  onChangeText={(text) => this.setState({ mobile: text })}
                  placeholderTextColor={Colors.C_999999} />
-      <TextInput style={[styles.text_input, { marginTop: 10, marginBottom: 10 }]}
-                 placeholder={"请输入密码"}
+      <TextInput style={[styles.text_input, { marginTop: 10 }]}
+                 placeholder={"请输入原密码"}
                  secureTextEntry={true}
                  onChangeText={(text) => this.setState({ password: text })}
+                 placeholderTextColor={Colors.C_999999} />
+      <TextInput style={[styles.text_input, { marginTop: 10 }]}
+                 placeholder={"请输入新密码"}
+                 secureTextEntry={true}
+                 onChangeText={(text) => this.setState({ newPassword: text })}
+                 placeholderTextColor={Colors.C_999999} />
+      <TextInput style={[styles.text_input, { marginTop: 10, marginBottom: 20 }]}
+                 placeholder={"请确认新密码"}
+                 secureTextEntry={true}
+                 onChangeText={(text) => this.setState({ newPasswordConfirm: text })}
                  placeholderTextColor={Colors.C_999999} />
       <TouchableHighlight style={styles.loginActionStyle}
                           underlayColor={Colors.C_666666}
                           onPress={() => {
-                            this.login();
+                            this.modify();
                           }}>
-        <Text style={styles.login_btn}>登录</Text>
+        <Text style={styles.login_btn}>确认修改</Text>
       </TouchableHighlight>
-      <TouchableHighlight style={styles.modifyActionStyle}
-                          underlayColor={Colors.C_666666}
-                          onPress={() => {
-                            this.props.navigation.navigate("ModifyPasswordPage");
-                          }}>
-        <Text style={styles.modify_btn}>修改密码</Text>
-      </TouchableHighlight>
+
     </View>;
   }
 }
@@ -109,7 +120,7 @@ export default class LoginPage extends BasePage {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: "50%",
+    paddingTop: "35%",
     marginHorizontal: 18,
   },
 
@@ -133,20 +144,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 12,
     fontSize: 16,
-    color: Colors.C_111,
-  },
-  modifyActionStyle: {
-    height: 36,
-    width: 64,
-    borderRadius: 3,
-    marginTop: 8,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  modify_btn: {
-    alignItems: "center",
-    justifyContent: "center",
-    fontSize: 13,
     color: Colors.C_111,
   },
 });
