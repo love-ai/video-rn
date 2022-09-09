@@ -70,7 +70,7 @@ export default class UploadPage extends BasePage {
     let fileName = uri.substring(uri.lastIndexOf("/"));
     const photoKey = encodeURIComponent("video") + fileName;
     console.log("photoKey:" + photoKey);
-    let res = await UploadFile("carlwe-bucket", photoKey, uri, (percent) => {
+    await UploadFile("carlwe-bucket", photoKey, uri, (percent) => {
       if (percent === 1) {
         setTimeout(() => {
           this.setState({
@@ -89,25 +89,6 @@ export default class UploadPage extends BasePage {
       });
     });
     console.log("res");
-    // Upload("carlwe-bucket", photoKey, uri, (res) => {
-    //   this.setState({
-    //     imgS3: res,
-    //   });
-    // }, (progress) => {
-    //   if (progress === 100) {
-    //     setTimeout(() => {
-    //       this.setState({
-    //         uploadingImg: false,
-    //         imgProgress: 0,
-    //       });
-    //     }, 1000);
-    //   }
-    //   this.setState({
-    //     uploadingImg: true,
-    //     imgProgress: progress,
-    //   });
-    // });
-    // S3Uitl.uploadObjectToS3("carlwe-bucket", photoKey, uri)
   }
 
   hideProgress() {
@@ -141,6 +122,7 @@ export default class UploadPage extends BasePage {
                               mediaType: "photo",
                             };
                             let res = await launchImageLibrary(options);
+                            console.log("res:" + JSON.stringify(res));
                             if (res.assets) {
                               let uri = res.assets[0].uri;
                               await this.uploadImg(uri);
