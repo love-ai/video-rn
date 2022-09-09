@@ -3,6 +3,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginPage from "../page/LoginPage";
 import VideoListPage from "../page/VideoListPage";
 import VideoPlayPage from "../page/VideoPlayPage";
+import ModifyPasswordPage from "../page/ModifyPasswordPage";
+import UploadPage from "../page/UploadPage";
 import { NavigationContainer } from "@react-navigation/native";
 import { Colors } from "../res/Colors";
 
@@ -12,7 +14,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName={"LoginPage"}
+        initialRouteName={"VideoListPage"}
         screenOptions={{
           headerShown: true,
           headerTitleAlign: "center",
@@ -28,12 +30,19 @@ export default function App() {
       >
         <Stack.Screen name={"LoginPage"} component={LoginPage} options={{ title: "请登录" }} />
         <Stack.Screen
+          name={"ModifyPasswordPage"}
+          component={ModifyPasswordPage}
+          options={{
+            title: "修改密码",
+          }} />
+        <Stack.Screen
           name={"VideoListPage"}
           component={VideoListPage}
           options={{
             title: "培训视频", headerBackVisible: false,
           }}
         />
+        <Stack.Screen name={"UploadPage"} component={UploadPage} options={{ title: "视频上传" }} />
         <Stack.Screen
           name={"VideoPlayPage"}
           component={VideoPlayPage}
