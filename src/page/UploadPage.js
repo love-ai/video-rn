@@ -12,7 +12,7 @@ import { launchImageLibrary } from "react-native-image-picker";
 import { isEmpty } from "../utils/ObjectUtil";
 import Upload from "../utils/S3Utils";
 import md5 from "md5";
-
+import { Image } from "react-native-compressor";
 
 export default class UploadPage extends BasePage {
 
@@ -68,6 +68,12 @@ export default class UploadPage extends BasePage {
   }
 
   async uploadImg(uri) {
+
+    uri = await Image.compress(uri, {
+      maxWidth: 720,
+      quality: 0.8,
+    });
+    console.log("result:" + JSON.stringify(uri));
     //上传到S3
     let fileName = uri.substring(uri.lastIndexOf("/"));
     const photoKey = encodeURIComponent("video") + fileName;

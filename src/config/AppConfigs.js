@@ -4,7 +4,7 @@
 export default {
   APP_NAME: "RnVideo", // 应用名称
   IS_DEBUG: true, // 环境标识
-  ENV: "debug",//release
+  ENV: "release",//release
   VERSION_CODE: 1, // APP 版本号
   VERSION_NAME: "1.0.0",
 };

@@ -5174,6 +5174,11 @@ react-native-codegen@^0.69.2:
     jscodeshift "^0.13.1"
     nullthrows "^1.1.1"
 
+react-native-compressor@^1.5.2:
+  version "1.5.2"
+  resolved "https://registry.npmmirror.com/react-native-compressor/-/react-native-compressor-1.5.2.tgz#be0cb4baa12d2595af503c245f3fee6ccfa9ff91"
+  integrity sha512-PaNM0h75thxO6NePTWVukSXy9Bt8zBu54VnYcAG8YD4lYHTqVmE9IhYv/ydc9t2bl6nVIuyi+ApMuDPihY9JFA==
+
 react-native-fast-image@^8.5.11:
   version "8.5.12"
   resolved "https://registry.npmmirror.com/react-native-fast-image/-/react-native-fast-image-8.5.12.tgz#af22cac1c37b381459cf68ecef4d5e8e10bc812f"
