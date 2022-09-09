@@ -8,6 +8,7 @@ const Images = {
   unlike: require("./drawable/unlike.png"),
   unlike_checked: require("./drawable/unlike_checked.png"),
   play_video: require("./drawable/play_video.png"),
+  play_video_grey: require("./drawable/play_video_grey.png"),
   plus: require("./drawable/plus.png"),
 };
 export { Images };

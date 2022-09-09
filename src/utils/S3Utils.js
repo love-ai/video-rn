@@ -1,6 +1,4 @@
-import type { AWSError } from "aws-sdk";
 import AWS, { S3 } from "aws-sdk";
-import type { PutObjectOutput } from "aws-sdk/clients/s3";
 // 对S3进行配置
 export const createS3 = () => {
   AWS.config.update({
@@ -14,7 +12,7 @@ export const createS3 = () => {
   });
 };
 
-export default async function Upload(bucket, key, uri, onSuccess, onProgress) {
+export default async function Upload(bucket, key, uri, onSuccess, onError) {
   const s3 = createS3(); //传入您的S3令牌
   const response = await fetch(uri);
   const blob = await response.blob();
@@ -27,23 +25,20 @@ export default async function Upload(bucket, key, uri, onSuccess, onProgress) {
       GrantReadACP: "uri=http://acs.amazonaws.com/groups/global/AllUsers",
       GrantRead: "uri=http://acs.amazonaws.com/groups/global/AllUsers",
     },
-    (err: AWSError, resp: PutObjectOutput) => {
+    (err, resp) => {
       if (err) {
-        console.log(err);
+        onError("上传失败");
       } else {
+        console.log("success:" + JSON.stringify(resp));
         onSuccess(resp);
-        console.log(JSON.stringify(resp)); // 上传成功时调用
       }
-    })
-    .onAsync("httpUploadProgress", (progress) => {
-      console.log("progress:" + JSON.stringify(progress));
     })
     .on("httpUploadProgress", (progress) => {
       const percent = (100 * progress.loaded) / progress.total;
-      onProgress(percent);
       console.log("percent:" + percent);
     })
     .on("httpError", (err) => {
+      onError("上传失败");
       if (err) {
         console.log(err);
       }

@@ -1,6 +1,6 @@
 import React from "react";
 import BasePage from "../base/BasePage";
-import { Dimensions, StyleSheet, Text, TextInput, TouchableHighlight, View } from "react-native";
+import { StyleSheet, Text, TextInput, TouchableHighlight, View } from "react-native";
 import BaseComponent from "../base/BaseComponent";
 import HttpCall from "../net/HttpCall";
 import Api from "./Api";
@@ -10,10 +10,9 @@ import FastImage from "react-native-fast-image";
 import { Images } from "../res/Images";
 import { launchImageLibrary } from "react-native-image-picker";
 import { isEmpty } from "../utils/ObjectUtil";
-import * as Progress from "react-native-progress";
-import UploadFile from "../utils/S3Util";
+import Upload from "../utils/S3Utils";
+import md5 from "md5";
 
-const progressWidth = Dimensions.get("window").width - 40;
 
 export default class UploadPage extends BasePage {
 
@@ -25,9 +24,6 @@ export default class UploadPage extends BasePage {
       title: "",
       imgUri: "",
       videoUri: "",
-      imgProgress: 0,
-      uploadingImg: false,
-      uploadingVideo: false,
       imgS3: "",
       videoS3: "",
       videoSource: "",
@@ -35,14 +31,20 @@ export default class UploadPage extends BasePage {
   }
 
   upload() {
-    const { mobile, password } = this.state;
-    if (mobile.length < 11) {
-      Toast.show("请输入正确的手机号");
-      return;
-    }
-    this.showLoading();
     const { navigation } = this.props;
     const { title, imgS3, videoS3, videoSource } = this.state;
+    if (isEmpty(title)) {
+      Toast.show("请填写视频名称");
+      return;
+    }
+    if (isEmpty(imgS3)) {
+      Toast.show("请完成视频封面上传");
+      return;
+    }
+    if (isEmpty(videoS3)) {
+      Toast.show("请完成视频上传");
+      return;
+    }
     let params = {
       title: title,
       thumbnail: imgS3,
@@ -50,6 +52,7 @@ export default class UploadPage extends BasePage {
       s3_url: videoS3,
     };
     console.log(params);
+    this.showLoading();
     HttpCall.post(Api.addVideo, params)
       .then((data) => {
         this.hideLoading();
@@ -66,52 +69,41 @@ export default class UploadPage extends BasePage {
 
   async uploadImg(uri) {
     //上传到S3
-    // let fileName = getUuid() + ".mp4";
     let fileName = uri.substring(uri.lastIndexOf("/"));
     const photoKey = encodeURIComponent("video") + fileName;
     console.log("photoKey:" + photoKey);
-    let res = await UploadFile("carlwe-bucket", photoKey, uri, (percent) => {
-      if (percent === 1) {
-        setTimeout(() => {
-          this.setState({
-            uploadingImg: false,
-            imgProgress: 0,
-          });
-        }, 1000);
-      }
+    this.showLoading();
+    await Upload("carlwe-bucket", photoKey, uri, (res) => {
+      this.hideLoading();
+      Toast.show("上传成功");
+      let imgUrl = "https://carlwe-bucket.s3.ap-northeast-1.amazonaws.com/" + photoKey;
       this.setState({
-        uploadingImg: true,
-        imgProgress: percent,
+        imgS3: imgUrl,
       });
-    }, (res) => {
-      this.setState({
-        imgS3: res,
-      });
+    }, (err) => {
+      Toast.show(err);
+      this.hideLoading();
     });
-    console.log("res");
-    // Upload("carlwe-bucket", photoKey, uri, (res) => {
-    //   this.setState({
-    //     imgS3: res,
-    //   });
-    // }, (progress) => {
-    //   if (progress === 100) {
-    //     setTimeout(() => {
-    //       this.setState({
-    //         uploadingImg: false,
-    //         imgProgress: 0,
-    //       });
-    //     }, 1000);
-    //   }
-    //   this.setState({
-    //     uploadingImg: true,
-    //     imgProgress: progress,
-    //   });
-    // });
-    // S3Uitl.uploadObjectToS3("carlwe-bucket", photoKey, uri)
   }
 
-  hideProgress() {
-
+  async uploadVideo(asserts) {
+    //上传到S3
+    let uri = asserts.uri;
+    let fileName = md5(uri + asserts.fileSize) + ".mp4";
+    const videoKey = encodeURIComponent("assets01") + "/" + fileName;
+    console.log("videoKey:" + videoKey);
+    this.showLoading();
+    await Upload("my-video-stack-source71e471f1-jcr9upd05io8", videoKey, uri, (res) => {
+      this.hideLoading();
+      Toast.show("上传成功");
+      this.setState({
+        videoS3: "s3://my-video-stack-source71e471f1-jcr9upd05io8/" + videoKey,
+        videoSource: "https://my-video-stack-source71e471f1-jcr9upd05io8.s3.ap-northeast-1.amazonaws.com/" + videoKey,
+      });
+    }, (err) => {
+      Toast.show(err);
+      this.hideLoading();
+    });
   }
 
   render() {
@@ -123,12 +115,11 @@ export default class UploadPage extends BasePage {
   }
 
   getContentView() {
-    const { imgUri, videoUri, uploadingImg, uploadingVideo, imgProgress } = this.state;
+    const { imgUri, videoUri } = this.state;
     return <View style={styles.container}>
       <Text style={styles.text_title}>视频名称：</Text>
       <TextInput style={styles.text_input}
                  placeholder={"请输入名称"}
-                 keyboardType={"number-pad"}
                  maxLength={50}
                  onChangeText={(text) => this.setState({ title: text })}
                  placeholderTextColor={Colors.C_999999} />
@@ -164,12 +155,6 @@ export default class UploadPage extends BasePage {
         </View>
 
       </TouchableHighlight>
-      {uploadingImg && <Progress.Bar
-        progress={imgProgress}
-        width={progressWidth}
-        color={Colors.C_999999}
-        style={styles.progress} />}
-
 
       <Text style={styles.text_title}>视频：</Text>
       <TouchableHighlight style={styles.image_out}
@@ -182,7 +167,7 @@ export default class UploadPage extends BasePage {
                             console.log("video res:" + JSON.stringify(res));
                             if (res.assets) {
                               let uri = res.assets[0].uri;
-                              await this.uploadImg(uri);
+                              await this.uploadVideo(res.assets[0]);
                               this.setState({
                                 videoUri: uri,
                               });
@@ -190,25 +175,17 @@ export default class UploadPage extends BasePage {
                           }}>
         <FastImage
           style={styles.add_image_style}
-          source={!isEmpty(videoUri) ? Images.play_video : Images.plus}
+          source={!isEmpty(videoUri) ? Images.play_video_grey : Images.plus}
           resizeMode={"center"}
         />
       </TouchableHighlight>
 
-
-      {uploadingVideo && <Progress.Bar
-        progress={0.1}
-        width={progressWidth}
-        color={Colors.C_161616}
-        style={styles.progress} />}
-
-
       <TouchableHighlight style={styles.submitActionStyle}
                           underlayColor={Colors.C_666666}
                           onPress={() => {
-                            this.login();
+                            this.upload();
                           }}>
-        <Text style={styles.login_btn}>提交</Text>
+        <Text style={styles.submit_btn}>提交</Text>
       </TouchableHighlight>
     </View>;
   }
@@ -223,7 +200,7 @@ const styles = StyleSheet.create({
   text_title: {
     fontSize: 15,
     color: Colors.black,
-    marginTop: 12,
+    marginTop: 18,
     paddingBottom: 8,
   },
   image_out: {
@@ -258,13 +235,13 @@ const styles = StyleSheet.create({
   },
   submitActionStyle: {
     height: 45,
-    marginTop: 20,
+    marginTop: 28,
     borderRadius: 3,
     alignItems: "center",
     backgroundColor: Colors.C_999999,
   },
 
-  login_btn: {
+  submit_btn: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
