@@ -21,7 +21,7 @@ export default class DefaultView extends PureComponent {
   render() {
     return (
       <TouchableOpacity
-        style={[commStyle.def_view, style]}
+        style={commStyle.def_view}
         activeOpacity={1}
         onPress={this.props.onPress()}
       >

@@ -8,6 +8,7 @@ import Toast from "react-native-root-toast";
 import VideoListItem from "./view/VideoListItem";
 import { MMKV } from "react-native-mmkv";
 import { Colors } from "../res/Colors";
+import { getUserId } from "../utils/KvUtil";
 
 const storage = new MMKV();
 
@@ -22,24 +23,40 @@ export default class VideoListPage extends BasePage {
     };
   }
 
-  componentDidMount() {
+  onResume() {
     const { navigation } = this.props;
+    let userType = storage.getString("userType");
+    let isLogin = storage.getBoolean("isLogin");
+    navigation.setOptions({
+      headerLeft: () => (
+        userType === "2" && (
+          <TouchableWithoutFeedback onPress={() => {
+            navigation.navigate("UploadPage");
+          }}>
+            <Text style={{ color: Colors.C_999999 }}>上传</Text>
+          </TouchableWithoutFeedback>)),
+    });
     navigation.setOptions({
       headerRight: () => (
         <TouchableWithoutFeedback onPress={() => {
-          storage.set("user.id", -1);
-          navigation.replace("LoginPage");
+          if (isLogin) {
+            storage.set("userId", "");
+            storage.set("userType", "");
+            storage.set("isLogin", false);
+            Toast.show("已退出");
+          }
+          navigation.navigate("LoginPage");
         }}>
-          <Text style={{ color: Colors.C_999999 }}>退出</Text>
+          <Text style={{ color: Colors.C_999999 }}>{isLogin ? "退出" : "登录"}</Text>
         </TouchableWithoutFeedback>),
     });
     this.getData();
   }
 
+
   getData() {
-    const { userId } = this.props.route.params;
     let params = {
-      userId: userId,
+      userId: getUserId(),
     };
     // 请求网络
     HttpCall.get(Api.getVideoList, params)
@@ -53,9 +70,10 @@ export default class VideoListPage extends BasePage {
       });
   }
 
+
   render() {
     return (
-      <BaseComponent {...this.state} >
+      <BaseComponent {...this.state} retry={this.getData}>
         {this.getContentView()}
       </BaseComponent>
     );

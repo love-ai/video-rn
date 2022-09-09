@@ -18,22 +18,9 @@ export default class LoginPage extends BasePage {
     this.state = {
       data: {},
       loading: false,
-      showNavBar: false,
       mobile: "",
       password: "",
     };
-  }
-
-  componentDidMount() {
-    let userId = storage.getNumber("user.id");
-    if (userId > 0) {
-      this.props.navigation.replace("VideoListPage", {
-        userId: userId,
-      });
-    }
-  }
-
-  onResume() {
   }
 
   login() {
@@ -55,9 +42,11 @@ export default class LoginPage extends BasePage {
         console.log(JSON.stringify(data));
         Toast.show("登陆成功");
         let userId = data.user.id;
-        storage.set("user.id", userId);
+        storage.set("userId", userId + "");
+        storage.set("userType", data.user.user_type + "");
+        storage.set("isLogin", true);
         //前往视频播放页面
-        navigation.replace("VideoListPage", {
+        navigation.navigate("VideoListPage", {
           userId: userId,
         });
       })

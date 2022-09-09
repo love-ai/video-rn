@@ -6,12 +6,11 @@ import { Images } from "../../res/Images";
 import { Colors } from "../../res/Colors";
 import HttpCall from "../../net/HttpCall";
 import Api from "../Api";
-import { MMKV } from "react-native-mmkv";
 import Toast from "react-native-root-toast";
+import { getUserId } from "../../utils/KvUtil";
 
 const videoHeight = Dimensions.get("window").width * 9 / 16;
 const videoWidth = Dimensions.get("window").width - 20;
-export const storage = new MMKV();
 /**
  * 达人广场item
  */
@@ -47,7 +46,7 @@ export default function VideoListItem({ item, navigation }: Props) {
     item.like_type = likeType;
     setLikeType(likeType);
     let param = {
-      "user_id": storage.getNumber("user.id"),
+      "user_id": getUserId(),
       "video_id": item.id,
       "like_type": likeType
     };

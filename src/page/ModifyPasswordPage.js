@@ -26,18 +26,6 @@ export default class ModifyPasswordPage extends BasePage {
     };
   }
 
-  componentDidMount() {
-    let userId = storage.getNumber("user.id");
-    if (userId > 0) {
-      this.props.navigation.replace("VideoListPage", {
-        userId: userId,
-      });
-    }
-  }
-
-  onResume() {
-  }
-
   modify() {
     const { mobile, password, newPassword, newPasswordConfirm } = this.state;
     if (mobile.length < 11) {
