@@ -64,7 +64,6 @@ export default function VideoListItem({ item, navigation }: Props) {
     <View style={styles.container}>
       <TouchableWithoutFeedback
         onPress={() => {
-          console.log("123");
           navigation.navigate("VideoPlayPage", {
             hls_url: item.hls_url
           });
