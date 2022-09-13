@@ -151,7 +151,7 @@ export default class UploadPage extends BasePage {
           <FastImage
             style={styles.add_image_style}
             source={Images.plus}
-            resizeMode={"center"}
+            resizeMode={"stretch"}
           />
           <FastImage
             style={styles.image_style}
@@ -182,7 +182,7 @@ export default class UploadPage extends BasePage {
         <FastImage
           style={styles.add_image_style}
           source={!isEmpty(videoUri) ? Images.play_video_grey : Images.plus}
-          resizeMode={"center"}
+          resizeMode={"stretch"}
         />
       </TouchableHighlight>
 

@@ -28,7 +28,7 @@ export default function App() {
         }}//可直接使用
         headerMode={"none"} //不展示导航栏
       >
-        <Stack.Screen name={"LoginPage"} component={LoginPage} options={{ title: "请登录" }} />
+        <Stack.Screen name={"LoginPage"} component={LoginPage} options={{ title: "请登录", headerBackTitle: "" }} />
         <Stack.Screen
           name={"ModifyPasswordPage"}
           component={ModifyPasswordPage}
@@ -42,7 +42,10 @@ export default function App() {
             title: "培训视频", headerBackVisible: false,
           }}
         />
-        <Stack.Screen name={"UploadPage"} component={UploadPage} options={{ title: "视频上传" }} />
+        <Stack.Screen name={"UploadPage"} component={UploadPage} options={{
+          title: "视频上传",
+          headerBackTitle: "",
+        }} />
         <Stack.Screen
           name={"VideoPlayPage"}
           component={VideoPlayPage}
