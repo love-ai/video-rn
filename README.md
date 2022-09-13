@@ -8,6 +8,7 @@ yarn android
 
 ### Android打release包
 react-native-compressor解决打包问题，修改/node_modules/react-native-compressor/android/build.gradle 文件
+bug:https://github.com/Shobbak/react-native-compressor/issues/117
 ```
  android {
 -    compileSdkVersion safeExtGet('Compressor_compileSdkVersion', 29)
