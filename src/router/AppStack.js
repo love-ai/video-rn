@@ -34,6 +34,7 @@ export default function App() {
           component={ModifyPasswordPage}
           options={{
             title: "修改密码",
+            headerBackTitle: "",
           }} />
         <Stack.Screen
           name={"VideoListPage"}
