@@ -13,6 +13,7 @@ import { isEmpty } from "../utils/ObjectUtil";
 import Upload from "../utils/S3Utils";
 import md5 from "md5";
 import { Image } from "react-native-compressor";
+import { getUserId } from "../utils/KvUtil";
 
 export default class UploadPage extends BasePage {
 
@@ -50,6 +51,7 @@ export default class UploadPage extends BasePage {
       thumbnail: imgS3,
       source_url: videoSource,
       s3_url: videoS3,
+      create_user_id: getUserId(),
     };
     console.log(params);
     this.showLoading();
