@@ -41,7 +41,11 @@ export default class HttpCall {
             body: JSON.stringify(params),
           };
         }
-        queryUrl = `${host}${url}`;
+        if (url.startsWith("https://")) {
+          queryUrl = `${url}`;
+        } else {
+          queryUrl = `${host}${url}`;
+        }
       } else {
         headerOptions = {
           method: method,
@@ -65,8 +69,8 @@ export default class HttpCall {
           return response.json();
         })
         .then((responseData) => {
-          console.log(JSON.stringify(responseData))
-          if ([0, "200", "0"].includes(responseData.code)) {
+          console.log(JSON.stringify(responseData));
+          if ([0, "200", "0"].includes(responseData.code) || responseData.result === "Success") {
             // 1, 请求成功
             if (!isEmpty(responseData.data)) {
               // 2, 判断 data 是否存在
@@ -79,7 +83,7 @@ export default class HttpCall {
           }
         })
         .catch((err) => {
-          console.log(JSON.stringify(err))
+          console.log(JSON.stringify(err));
           // 异常处理
           let error = {};
           if (isEqual(err.message, "Network request failed")) {

@@ -1,6 +1,6 @@
 // @ts-ignore
 import React, { useEffect, useState } from "react";
-import { Dimensions, StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native";
+import { Dimensions, Platform, StyleSheet, Text, TouchableWithoutFeedback, View } from "react-native";
 import FastImage from "react-native-fast-image";
 import { Images } from "../../res/Images";
 import { Colors } from "../../res/Colors";
@@ -8,7 +8,10 @@ import HttpCall from "../../net/HttpCall";
 import Api from "../Api";
 import Toast from "react-native-root-toast";
 import { getUserId } from "../../utils/KvUtil";
+import { MMKV } from "react-native-mmkv";
+import { dateFormat } from "../../utils/DateUtil";
 
+const storage = new MMKV();
 const videoHeight = Dimensions.get("window").width * 9 / 16;
 const videoWidth = Dimensions.get("window").width - 20;
 /**
@@ -27,6 +30,22 @@ export default function VideoListItem({ item, navigation }: Props) {
   }
 
   function changeLike(isClickLike) {
+    let userName = storage.getString("userName");
+    let eventName = isClickLike ? "Like" : "Unlike";
+    let lastLoginTime = storage.getString("lastLoginTime");
+    let eventTime = dateFormat("YYYY-mm-dd HH:MM:SS", new Date());
+    let info = {
+      "candidate": "zhuxiaowei",
+      "userId": getUserId(),
+      "mobileType": Platform.OS,
+      "userName": userName,
+      "videoId": item.id + "",
+      "eventName": eventName,
+      "lastLogin": lastLoginTime,
+      "eventTime": eventTime
+    };
+    console.log("info:" + JSON.stringify(info));
+    sendInfo(info);
     if (isClickLike) {
       if (likeType === 1) {
         changeType(0);
@@ -42,6 +61,17 @@ export default function VideoListItem({ item, navigation }: Props) {
     }
   }
 
+  function sendInfo(info) {
+    let host = "https://x48usp9m8e.execute-api.us-east-2.amazonaws.com";
+    HttpCall.post(host + Api.info, info)
+      .then((data) => {
+        console.log("send info success");
+      })
+      .catch((error) => {
+        console.log("send info error");
+      });
+  }
+
   function changeType(likeType) {
     item.like_type = likeType;
     setLikeType(likeType);
@@ -51,7 +81,7 @@ export default function VideoListItem({ item, navigation }: Props) {
       "like_type": likeType
     };
     //网络请求更新
-    HttpCall.post(Api.likeVideo, param)
+    HttpCall.post(Api.sendInfo, param)
       .then((data) => {
         console.log("操作成功");
       })

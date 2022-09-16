@@ -8,6 +8,7 @@ import { Colors } from "../res/Colors";
 import md5 from "md5";
 import Toast from "react-native-root-toast";
 import { MMKV } from "react-native-mmkv";
+import { dateFormat } from "../utils/DateUtil";
 
 const storage = new MMKV();
 
@@ -43,8 +44,12 @@ export default class LoginPage extends BasePage {
         Toast.show("登陆成功");
         let userId = data.user.id;
         storage.set("userId", userId + "");
+        storage.set("userName", data.user.name + "");
         storage.set("userType", data.user.user_type + "");
         storage.set("isLogin", true);
+
+        let lastLoginTime = dateFormat("YYYY-mm-dd HH:MM:SS", new Date());
+        storage.set("lastLoginTime", lastLoginTime);
         //前往视频播放页面
         navigation.navigate("VideoListPage", {
           userId: userId,
