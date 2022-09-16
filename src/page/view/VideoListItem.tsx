@@ -18,9 +18,10 @@ const videoWidth = Dimensions.get("window").width - 20;
 type Props = {
   item: any;
   navigation: any;
+  onLongPress: any;
 };
 
-export default function VideoListItem({ item, navigation }: Props) {
+export default function VideoListItem({ item, navigation, onLongPress }: Props) {
   let [likeType, setLikeType] = useState(item.like_type);//0无点赞 1喜欢 2不喜欢
   if (likeType != item.like_type) {
     setLikeType(item.like_type);
@@ -63,6 +64,9 @@ export default function VideoListItem({ item, navigation }: Props) {
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback
+        onLongPress={() => {
+          onLongPress(item.id);
+        }}
         onPress={() => {
           navigation.navigate("VideoPlayPage", {
             hls_url: item.hls_url
